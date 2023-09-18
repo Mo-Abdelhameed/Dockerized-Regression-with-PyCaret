@@ -60,8 +60,6 @@ class Regressor:
     regressor models.
     """
 
-    model_name = "pycaret_regressor_model"
-
     def __init__(
             self,
             train_input: pd.DataFrame,
@@ -78,6 +76,7 @@ class Regressor:
         self.schema = schema
         self.setup(train_input, schema)
         self.model = self.compare_models()
+        self.model_name = "pycaret_regressor_model"
 
     def setup(self, train_input: pd.DataFrame, schema: RegressionSchema):
         """Set up the experiment of comparing different models.
@@ -128,7 +127,7 @@ class Regressor:
     def __str__(self):
         # sort params alphabetically for unit test to run successfully
         return (
-            f"Model name: {type(self.model).__name__}"
+            f"Model name: {self.model_name}"
         )
 
 

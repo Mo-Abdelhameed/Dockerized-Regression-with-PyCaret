@@ -89,16 +89,17 @@ async def transform_req_data_and_make_predictions(
 
     # validate the data
     logger.info("Validating data...")
-    validated_data = validate_data(
-        data=data, data_schema=model_resources.data_schema, is_train=False
-    )
+    validate_data(data=data, data_schema=model_resources.data_schema, is_train=False)
 
     logger.info("Making predictions...")
     predictions_df = predict_with_model(
         model_resources.predictor_model,
         data,
     )[[model_resources.data_schema.id, 'prediction_label']]
-    predictions_df.rename(columns={'prediction_label': model_resources.model_config["prediction_field_name"]}, inplace=True)
+    predictions_df.rename(
+        columns={'prediction_label': model_resources.model_config["prediction_field_name"]},
+        inplace=True
+    )
 
     logger.info("Converting predictions dataframe into response dictionary...")
     predictions_response = create_predictions_response(
@@ -144,25 +145,4 @@ def create_predictions_response(
         "targetDescription": data_schema.target_description,
         "predictions": sample_predictions,
     }
-    return predictions_response
-
-
-def combine_predictions_response_with_explanations(
-    predictions_response: dict, explanations: dict
-) -> dict:
-    """
-    Combine the predictions response with explanations.
-
-    Inserts explanations for each sample into the respective prediction dictionary
-    for the sample.
-
-    Args:
-        predictions_response (dict): The response data in a dictionary.
-        explanations (dict): The explanations for the predictions.
-    """
-    for pred, exp in zip(
-        predictions_response["predictions"], explanations["explanations"]
-    ):
-        pred["explanation"] = exp
-    predictions_response["explanationMethod"] = explanations["explanation_method"]
     return predictions_response

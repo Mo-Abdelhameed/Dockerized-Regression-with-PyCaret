@@ -7,7 +7,12 @@ from schema.data_schema import load_saved_schema
 logger = get_logger(task_name="predict")
 
 
-def run_batch_predictions() -> None:
+def run_batch_predictions(
+        test_dir=paths.TEST_DIR,
+        predictor_dir=paths.PREDICTOR_DIR_PATH,
+        predictions_file_path=paths.PREDICTIONS_FILE_PATH,
+        saved_schema_dir=paths.SAVED_SCHEMA_DIR_PATH
+) -> None:
     """
         Run batch predictions on test data, save the predicted probabilities to a CSV file.
 
@@ -18,9 +23,9 @@ def run_batch_predictions() -> None:
         adds ids into the predictions dataframe,
         and saves the predictions as a CSV file.
         """
-    x_test = read_csv_in_directory(paths.TEST_DIR)
-    data_schema = load_saved_schema(paths.SAVED_SCHEMA_DIR_PATH)
-    model = Regressor.load(paths.PREDICTOR_DIR_PATH)
+    x_test = read_csv_in_directory(test_dir)
+    data_schema = load_saved_schema(saved_schema_dir)
+    model = Regressor.load(predictor_dir)
     logger.info("Making predictions...")
     predictions_df = predict_with_model(model, x_test)[[data_schema.id, 'prediction_label']]
     predictions_df.rename(columns={'prediction_label': 'prediction'}, inplace=True)
@@ -29,7 +34,7 @@ def run_batch_predictions() -> None:
 
     logger.info("Saving predictions...")
     save_dataframe_as_csv(
-        dataframe=predictions_df, file_path=paths.PREDICTIONS_FILE_PATH
+        dataframe=predictions_df, file_path=predictions_file_path
     )
 
     logger.info("Batch predictions completed successfully")
