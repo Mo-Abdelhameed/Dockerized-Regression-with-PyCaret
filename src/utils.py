@@ -10,20 +10,20 @@ from sklearn.model_selection import train_test_split
 
 def read_json_as_dict(input_path: str) -> Dict:
     """
-        Reads a JSON file and returns its content as a dictionary.
-        If input_path is a directory, the first JSON file in the directory is read.
-        If input_path is a file, the file is read.
+    Reads a JSON file and returns its content as a dictionary.
+    If input_path is a directory, the first JSON file in the directory is read.
+    If input_path is a file, the file is read.
 
-        Args:
-            input_path (str): The path to the JSON file or directory containing a JSON file.
+    Args:
+        input_path (str): The path to the JSON file or directory containing a JSON file.
 
-        Returns:
-            dict: The content of the JSON file as a dictionary.
+    Returns:
+        dict: The content of the JSON file as a dictionary.
 
-        Raises:
-            ValueError: If the input_path is neither a file nor a directory,
-                        or if input_path is a directory without any JSON files.
-        """
+    Raises:
+        ValueError: If the input_path is neither a file nor a directory,
+                    or if input_path is a directory without any JSON files.
+    """
     if os.path.isdir(input_path):
         # Get all json files in the directory
         json_files = [
@@ -33,7 +33,7 @@ def read_json_as_dict(input_path: str) -> Dict:
         ]
         # If there are no JSON files, raise a ValueError
         if not json_files:
-            raise ValueError('No JSON files found in the directory')
+            raise ValueError("No JSON files found in the directory")
 
         # Else, get the path of the first JSON file
         json_file_path = json_files[0]
@@ -78,7 +78,7 @@ def read_csv_in_directory(file_dir_path: str) -> pd.DataFrame:
         raise ValueError(f"Multiple CSV files found in directory {file_dir_path}.")
 
     csv_file_path = os.path.join(file_dir_path, csv_files[0])
-    df = pd.read_csv(csv_file_path, na_values=['?'])
+    df = pd.read_csv(csv_file_path, na_values=["?"])
     return df
 
 
@@ -194,4 +194,3 @@ def make_serializable(obj: Any) -> Union[int, float, List[Union[int, float]], An
         return obj.tolist()
     else:
         return json.JSONEncoder.default(None, obj)
-

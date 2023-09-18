@@ -106,10 +106,7 @@ def run_training_and_record(
 
 
 def run_prediction_and_record(
-    tmpdir,
-    predictor_dir_path: str,
-    test_dir: str,
-    saved_schema_dir: str
+    tmpdir, predictor_dir_path: str, test_dir: str, saved_schema_dir: str
 ) -> Tuple[str, float, float]:
     """Run prediction process and record the memory usage and execution time.
 
@@ -136,7 +133,7 @@ def run_prediction_and_record(
         test_dir=test_dir,  # re-using the train data for prediction
         predictor_dir=predictor_dir_path,
         predictions_file_path=predictions_file_path,
-        saved_schema_dir=saved_schema_dir
+        saved_schema_dir=saved_schema_dir,
     )
 
     # Stop recording
@@ -153,9 +150,7 @@ def run_prediction_and_record(
 
 @pytest.mark.slow
 def test_train_predict_performance(
-    tmpdir,
-    train_predict_perf_results_path: str,
-    schema_dict, sample_data
+    tmpdir, train_predict_perf_results_path: str, schema_dict, sample_data
 ):
     """Test the training and prediction workflows while recording performance.
 
@@ -216,7 +211,7 @@ def test_train_predict_performance(
             tmpdir,
             results["predictor_dir_path"],
             train_dir,
-            results["saved_schema_dir_path"]
+            results["saved_schema_dir_path"],
         )
 
         # Assert that the predictions file is saved in the correct path

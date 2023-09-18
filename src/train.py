@@ -1,32 +1,31 @@
 import os
-from Regressor import Regressor
-from utils import read_csv_in_directory
+
 from config import paths
 from logger import get_logger, log_error
+from Regressor import Regressor
 from schema.data_schema import load_json_data_schema, save_schema
-from utils import set_seeds
-
+from utils import read_csv_in_directory, set_seeds
 
 logger = get_logger(task_name="train")
 
 
 def run_training(
-        input_schema_dir: str = paths.INPUT_SCHEMA_DIR,
-        saved_schema_dir_path: str = paths.SAVED_SCHEMA_DIR_PATH,
-        train_dir: str = paths.TRAIN_DIR,
-        predictor_dir_path: str = paths.PREDICTOR_DIR_PATH,
-       ) -> None:
+    input_schema_dir: str = paths.INPUT_SCHEMA_DIR,
+    saved_schema_dir_path: str = paths.SAVED_SCHEMA_DIR_PATH,
+    train_dir: str = paths.TRAIN_DIR,
+    predictor_dir_path: str = paths.PREDICTOR_DIR_PATH,
+) -> None:
     """
-       Run the training process and saves model artifacts
+    Run the training process and saves model artifacts
 
-       Args:
-           input_schema_dir (str, optional): The directory path of the input schema.
-           saved_schema_dir_path (str, optional): The path where to save the schema.
-           train_dir (str, optional): The directory path of the train data.
-           predictor_dir_path (str, optional): Dir path where to save the predictor model.
-       Returns:
-           None
-       """
+    Args:
+        input_schema_dir (str, optional): The directory path of the input schema.
+        saved_schema_dir_path (str, optional): The path where to save the schema.
+        train_dir (str, optional): The directory path of the train data.
+        predictor_dir_path (str, optional): Dir path where to save the predictor model.
+    Returns:
+        None
+    """
     try:
         logger.info("Starting training...")
         set_seeds(seed_value=123)
@@ -41,8 +40,8 @@ def run_training(
         if not os.path.exists(predictor_dir_path):
             os.makedirs(predictor_dir_path)
         regressor.save(predictor_dir_path)
-        logger.info(f'The best model is: {type(regressor.model).__name__}')
-        logger.info('Model saved!')
+        logger.info(f"The best model is: {type(regressor.model).__name__}")
+        logger.info("Model saved!")
 
     except Exception as exc:
         err_msg = "Error occurred during training."

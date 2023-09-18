@@ -1,5 +1,7 @@
 import os
+
 import pandas as pd
+
 from predict import run_batch_predictions
 from train import run_training
 
@@ -55,7 +57,7 @@ def test_integration_run_batch_predictions(
         test_dir=test_dir,
         predictor_dir=predictor_dir_path,
         saved_schema_dir=saved_schema_dir_path,
-        predictions_file_path=predictions_file_path
+        predictions_file_path=predictions_file_path,
     )
 
     # Assert that the predictions file is saved in the correct path

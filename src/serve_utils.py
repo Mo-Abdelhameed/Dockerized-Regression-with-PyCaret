@@ -95,10 +95,12 @@ async def transform_req_data_and_make_predictions(
     predictions_df = predict_with_model(
         model_resources.predictor_model,
         data,
-    )[[model_resources.data_schema.id, 'prediction_label']]
+    )[[model_resources.data_schema.id, "prediction_label"]]
     predictions_df.rename(
-        columns={'prediction_label': model_resources.model_config["prediction_field_name"]},
-        inplace=True
+        columns={
+            "prediction_label": model_resources.model_config["prediction_field_name"]
+        },
+        inplace=True,
     )
 
     logger.info("Converting predictions dataframe into response dictionary...")

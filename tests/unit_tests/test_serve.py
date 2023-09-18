@@ -1,5 +1,6 @@
 import json
 from unittest.mock import patch
+
 import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
@@ -7,7 +8,7 @@ from fastapi.testclient import TestClient
 
 @pytest.fixture
 def predictor_dir(tmpdir):
-    return tmpdir.mkdir('predictor')
+    return tmpdir.mkdir("predictor")
 
 
 def test_ping(app):

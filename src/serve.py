@@ -1,14 +1,21 @@
-import pandas as pd
-import uvicorn
 import uuid
 from typing import Any
+
+import pandas as pd
+import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from data_models.infer_request_model import get_inference_request_body_model
+
 from config import paths
+from data_models.infer_request_model import get_inference_request_body_model
 from logger import log_error
-from serve_utils import transform_req_data_and_make_predictions, logger, ModelResources, get_model_resources
+from serve_utils import (
+    ModelResources,
+    get_model_resources,
+    logger,
+    transform_req_data_and_make_predictions,
+)
 
 
 def create_app(model_resources):
@@ -26,7 +33,7 @@ def create_app(model_resources):
 
     @app.exception_handler(RequestValidationError)
     async def validation_exception_handler(
-            request: Any, exc: RequestValidationError
+        request: Any, exc: RequestValidationError
     ) -> JSONResponse:
         """
         Handle validation errors for FastAPI requests.
@@ -71,7 +78,9 @@ def create_app(model_resources):
             logger.info(f"Responding to inference request. Request id: {request_id}")
             logger.info("Starting predictions...")
             data = pd.DataFrame.from_records(request.dict()["instances"])
-            _, predictions_response = await transform_req_data_and_make_predictions(data, model_resources, request_id)
+            _, predictions_response = await transform_req_data_and_make_predictions(
+                data, model_resources, request_id
+            )
             logger.info("Returning predictions...")
             return predictions_response
         except Exception as exc:

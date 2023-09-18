@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
+
 from src.schema.data_schema import RegressionSchema
 from src.serve import create_app
 from src.serve_utils import get_model_resources
@@ -211,7 +212,7 @@ def test_resources_dir_path(tmpdir):
 
 @pytest.fixture
 def config_file_paths_dict(
-        model_config_file_path,
+    model_config_file_path,
 ):
     """Define a fixture for the paths to all config files."""
     return {
@@ -267,9 +268,9 @@ def sample_response_data(schema_dict):
 
 @pytest.fixture
 def app(
-        input_schema_dir,
-        train_dir,
-        resources_paths_dict: dict,
+    input_schema_dir,
+    train_dir,
+    resources_paths_dict: dict,
 ):
     """
     Define a fixture for the test app.
@@ -298,7 +299,7 @@ def app(
     model_resources = get_model_resources(
         saved_schema_dir_path=saved_schema_dir_path,
         predictor_dir_path=predictor_dir_path,
-        model_config_file_path=model_config_file_path
+        model_config_file_path=model_config_file_path,
     )
     # create test app
     return TestClient(create_app(model_resources))

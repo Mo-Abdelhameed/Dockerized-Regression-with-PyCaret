@@ -2,16 +2,18 @@ import os
 import re
 import warnings
 from typing import List
+
 import joblib
 import numpy as np
 import pandas as pd
+from pycaret.regression import compare_models, finalize_model, predict_model, setup
 from sklearn.exceptions import NotFittedError
-from pycaret.regression import setup, compare_models, predict_model, finalize_model
+
 from schema.data_schema import RegressionSchema
 
 warnings.filterwarnings("ignore")
 
-os.environ['MPLCONFIGDIR'] = os.getcwd() + "/configs/"
+os.environ["MPLCONFIGDIR"] = os.getcwd() + "/configs/"
 
 PREDICTOR_FILE_NAME = "predictor.joblib"
 
@@ -37,7 +39,7 @@ def clean_and_ensure_unique(names: List[str]) -> List[str]:
     """
 
     # First, clean the names
-    cleaned_names = [re.sub('[^A-Za-z0-9_]+', '', name) for name in names]
+    cleaned_names = [re.sub("[^A-Za-z0-9_]+", "", name) for name in names]
 
     # Now ensure uniqueness
     seen = {}
@@ -60,11 +62,7 @@ class Regressor:
     regressor models.
     """
 
-    def __init__(
-            self,
-            train_input: pd.DataFrame,
-            schema: RegressionSchema
-    ):
+    def __init__(self, train_input: pd.DataFrame, schema: RegressionSchema):
         """Construct a new PyCaret Regressor.
 
         Args:
@@ -84,7 +82,13 @@ class Regressor:
             train_input: The data  of training including the target column.
             schema: schema of the provided data.
         """
-        setup(train_input, target=schema.target, remove_outliers=True, normalize=True, ignore_features=[schema.id])
+        setup(
+            train_input,
+            target=schema.target,
+            remove_outliers=True,
+            normalize=True,
+            ignore_features=[schema.id],
+        )
 
     def compare_models(self):
         """Compares multiple regression models."""
@@ -126,9 +130,7 @@ class Regressor:
 
     def __str__(self):
         # sort params alphabetically for unit test to run successfully
-        return (
-            f"Model name: {self.model_name}"
-        )
+        return f"Model name: {self.model_name}"
 
 
 def predict_with_model(regressor: "Regressor", data: pd.DataFrame) -> pd.DataFrame:
@@ -169,5 +171,3 @@ def load_predictor_model(predictor_dir_path: str) -> Regressor:
         Regressor: A new instance of the loaded regressor model.
     """
     return Regressor.load(predictor_dir_path)
-
-

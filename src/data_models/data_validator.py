@@ -105,4 +105,3 @@ def validate_data(
         return validated_data.data
     except ValueError as exc:
         raise ValueError(f"Data validation failed: {str(exc)}") from exc
-
