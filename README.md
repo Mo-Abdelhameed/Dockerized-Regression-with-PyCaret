@@ -1,5 +1,16 @@
 # Dockerized-Regression-with-PyCaret
-Dockerized ML model with train, predict and infer APIs using PyCaret.
+## Project Description
+
+This repository is a dockerized implementation of the re-usable regression model. It is implemented in flexible way so that it can be used with any regression dataset with the use of CSV-formatted data, and a JSON-formatted data schema file. The main purpose of this repository is to provide a complete example of a machine learning model implementation that is ready for deployment.
+The following are the requirements for using your data with this model:
+
+- The data must be in CSV format.
+- The number of rows must not exceed 20,000. Number of columns must not exceed 200. The model may function with larger datasets, but it has not been performance tested on larger datasets.
+- Features must be one of the following two types: NUMERIC or CATEGORICAL. Other data types are not supported. Note that CATEGORICAL type includes boolean type.
+- The train and test (or prediction) files must contain an ID field. The train data must also contain a target field.
+- The data need not be preprocessed because the implementation already contains logic to handle missing values, categorical features, outliers, and scaling.
+
+---
 
 Here are the highlights of this implementation: <br/>
 
@@ -59,13 +70,7 @@ In this section we cover the following:
 
 - Create your virtual environment and install dependencies listed in `requirements.txt` which is inside the `requirements` directory.
 - Move the three example files (`titanic_schema.json`, `titanic_train.csv` and `titanic_test.csv`) in the `examples` directory into the `./model_inputs_outputs/inputs/schema`, `./model_inputs_outputs/inputs/data/training` and `./model_inputs_outputs/inputs/data/testing` folders, respectively (or alternatively, place your custom dataset files in the same locations).
-3 weeks ago
-
-Update README.md
 - Run the script `src/train.py` to train the classifier model. This will save the model artifacts, including the preprocessing pipeline and label encoder, in the path `./model_inputs_outputs/model/artifacts/`.
-last month
-
-init:
 - Run the script `src/predict.py` to run batch predictions using the trained model. This script will load the artifacts and create and save the predictions in a file called `predictions.csv` in the path `./model_inputs_outputs/outputs/predictions/`.
 - Run the script `src/serve.py` to start the inference service, which can be queried using the `/ping` and `/infer` endpoints. The service runs on port 8080.
 
