@@ -23,7 +23,7 @@ def run_batch_predictions() -> None:
     model = Regressor.load(paths.PREDICTOR_DIR_PATH)
     logger.info("Making predictions...")
     predictions_df = predict_with_model(model, x_test)[[data_schema.id, 'prediction_label']]
-    predictions_df.rename(columns={'prediction_label': data_schema.target}, inplace=True)
+    predictions_df.rename(columns={'prediction_label': 'prediction'}, inplace=True)
 
     print(predictions_df)
 
