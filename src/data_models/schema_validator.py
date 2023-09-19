@@ -24,17 +24,8 @@ class Target(BaseModel):
     example: float
 
 
-class InputDataFormat(BaseModel):
-    """
-    A model representing the inputDataFormat field of the schema.
-    """
-
-    type: str
-    encoding: str
-
-
 class DataType(str, Enum):
-    """Enum for the data type of a feature"""
+    """Enum for the data type of feature"""
 
     NUMERIC = "NUMERIC"
     CATEGORICAL = "CATEGORICAL"
@@ -101,7 +92,8 @@ class SchemaModel(BaseModel):
     description: str = None
     modelCategory: str
     schemaVersion: float
-    inputDataFormat: InputDataFormat
+    inputDataFormat: str
+    encoding: str
     id: ID
     target: Target
     features: List[Feature]
