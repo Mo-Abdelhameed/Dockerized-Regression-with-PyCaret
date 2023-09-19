@@ -56,7 +56,7 @@ def clean_and_ensure_unique(names: List[str]) -> List[str]:
 
 
 class Regressor:
-    """A wrapper class for the LightGBM Regressor.
+    """A wrapper class for the PyCaret Regressor.
 
     This class provides a consistent interface that can be used with other
     regressor models.
