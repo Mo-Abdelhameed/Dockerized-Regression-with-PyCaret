@@ -85,7 +85,7 @@ class RegressionSchema:
         Returns:
             str: The format of the input data (e.g., CSV, JSON, etc.).
         """
-        return self.schema["inputDataFormat"]["type"]
+        return self.schema["inputDataFormat"]
 
     @property
     def encoding(self) -> str:
@@ -95,7 +95,7 @@ class RegressionSchema:
         Returns:
             str: The encoding of the input data (e.g., "utf-8", "ISO-8859-1, etc.).
         """
-        return self.schema["inputDataFormat"]["encoding"]
+        return self.schema["encoding"]
 
     def _get_features(self) -> Tuple[List[str], List[str]]:
         """
