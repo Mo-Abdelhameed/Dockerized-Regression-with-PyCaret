@@ -2,7 +2,7 @@ from config import paths
 from logger import get_logger
 from Regressor import Regressor, predict_with_model
 from schema.data_schema import load_saved_schema
-from utils import read_csv_in_directory, save_dataframe_as_csv
+from utils import read_csv_in_directory, save_dataframe_as_csv, ResourceTracker
 
 logger = get_logger(task_name="predict")
 
@@ -23,13 +23,14 @@ def run_batch_predictions(
     adds ids into the predictions dataframe,
     and saves the predictions as a CSV file.
     """
-    x_test = read_csv_in_directory(test_dir)
-    data_schema = load_saved_schema(saved_schema_dir)
-    model = Regressor.load(predictor_dir)
-    logger.info("Making predictions...")
-    predictions_df = predict_with_model(model, x_test)[
-        [data_schema.id, "prediction_label"]
-    ]
+    with ResourceTracker(logger, monitoring_interval=0.1):
+        x_test = read_csv_in_directory(test_dir)
+        data_schema = load_saved_schema(saved_schema_dir)
+        model = Regressor.load(predictor_dir)
+        logger.info("Making predictions...")
+        predictions_df = predict_with_model(model, x_test)[
+            [data_schema.id, "prediction_label"]
+        ]
     predictions_df.rename(columns={"prediction_label": "prediction"}, inplace=True)
 
     print(predictions_df)
